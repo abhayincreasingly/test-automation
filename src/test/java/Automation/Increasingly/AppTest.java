@@ -153,6 +153,7 @@ public class AppTest{
 		   WebDriverWait wait = new WebDriverWait(driver,60);
 			
 		   WebElement addToCart_btn;
+		  
 		   
 		
 		  addToCart_btn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@id='content2']//button[@id='btnAddtobasket-product-bundle-1 bundlebutton1']")));
@@ -161,14 +162,55 @@ public class AppTest{
 		   Thread.sleep(5000);
 	
 		  ((JavascriptExecutor) driver).executeScript("arguments[0].click();", addToCart_btn);
+		  
+		  cartModalValidation();
 
-		   WebElement ModalDiv;
+		   
+			
+		}
+	
+		
+		public static void mainAddToCart() throws InterruptedException{
+			
+			WebDriverWait wait = new WebDriverWait(driver,60);
+			  WebElement addToCartButton;
+				
+			  addToCartButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html[1]/body[1]/div[12]/div[1]/div[1]/div[3]/div[1]/div[3]/div[1]/div[1]/form[1]/div[2]/div[1]/div[1]/div[3]/div[1]/div[1]/button[1]")));
+
+	        
+	        //This will scroll the page till the element is found	
+			  
+			  JavascriptExecutor js = (JavascriptExecutor) driver;
+	        js.executeScript("arguments[0].scrollIntoView();", addToCartButton);
+	        
+	        System.out.println("Scrolled into view!!!");
+	        
+	        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", addToCartButton);
+	        
+	        cartModalValidation();
+	        
+	        WebElement addToCart_button;
+	        
+	        addToCart_button = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html[1]/body[1]/div[10]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/form[1]/div[1]/div[3]/button[1]")));
+ 
+	        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", addToCart_button);
+	        
+	        driver.manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
+	        
+	        
+		}
+		
+		public static void cartModalValidation() throws InterruptedException{
+			
+			WebDriverWait wait = new WebDriverWait(driver,60);
+			
+			WebElement ModalDiv;
 			
 			ModalDiv = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='inc_minibasket_modal-content']")));
 			
 			if(ModalDiv.isDisplayed()){
 				
-				Thread.sleep(1000);
+				Thread.sleep(3000);
 				
 				WebElement confirmationMsg;
 				
@@ -215,9 +257,9 @@ public class AppTest{
 			else{
 				System.out.println("Modal not displayed");
 			}
-			
 		}
-	
+		
+			
 		
 	
 
@@ -231,6 +273,10 @@ public class AppTest{
 		searchForBundledProduct();
 		
 		addToCartAndProceedToCartPage();
+		
+		driver.navigate().back();
+		
+		mainAddToCart();
 
 		System.out.println("All actions done!");
 		
