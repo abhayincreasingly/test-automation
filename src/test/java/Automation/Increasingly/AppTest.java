@@ -77,7 +77,7 @@ public class AppTest{
 	//Bundle Product search from PLP
 	public static void searchForBundledProduct() throws InterruptedException{
 		
-		WebDriverWait wait = new WebDriverWait(driver,50);
+		WebDriverWait wait = new WebDriverWait(driver,20);
 		
 		WebElement searchField;
 		
@@ -111,11 +111,9 @@ public class AppTest{
 		
 		 System.out.println("Product page visit made!");
 		 
-		 //entering the bundle  tab grp validation 
-		 
 		 locateBundleTabs();
 		
-	//	Thread.sleep(3000);
+	
 		
 		
 		
@@ -145,43 +143,32 @@ public class AppTest{
 	        
 	        tabToBeSelected.click();
 	        
+	        driver.manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
 	        
-	    //    WebElement addToCart_btn;
-			
-			//   addToCart_btn = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@id='content1']//div[@class='bundle_buy_btn']/button[1]")));
-	       
-	        
-	        //   tabToBeSelected = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html[1]/body[1]/div[12]/div[1]/div[1]/div[3]/div[1]/div[3]/div[3]/div[1]/div[2]/div[1]/div[1]/span[1]")))
 		}
 	
 		
-		public static void addToCartAndProceedToCartPage(){
+		public static void addToCartAndProceedToCartPage() throws InterruptedException{
 			
 		   WebDriverWait wait = new WebDriverWait(driver,60);
 			
 		   WebElement addToCart_btn;
 		   
-
-		   addToCart_btn = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html[1]/body[1]/div[12]/div[1]/div[1]/div[3]/div[1]/div[3]/div[3]/div[1]/div[2]/div[2]/div[2]/form[1]/div[2]/div[1]/div[3]/button")));
-			
-		   Actions builder = new Actions(driver);
-		     builder.moveToElement( addToCart_btn ).click( addToCart_btn );
-		     builder.perform();
-
-		   driver.manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
-			
-		}
-	
 		
-		public static void cartModalValidation() throws InterruptedException{
+		  addToCart_btn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@id='content2']//button[@id='btnAddtobasket-product-bundle-1 bundlebutton1']")));
 			
-			WebDriverWait wait = new WebDriverWait(driver,70);
+		
+		   Thread.sleep(5000);
+	
+		  ((JavascriptExecutor) driver).executeScript("arguments[0].click();", addToCart_btn);
+
+		   WebElement ModalDiv;
 			
-			WebElement ModalDiv;
-			
-			ModalDiv = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class='inc_minibasket_modal-content']")));
+			ModalDiv = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='inc_minibasket_modal-content']")));
 			
 			if(ModalDiv.isDisplayed()){
+				
+				Thread.sleep(1000);
 				
 				WebElement confirmationMsg;
 				
@@ -222,12 +209,17 @@ public class AppTest{
 			   
 			   Thread.sleep(2000);
 				
+			   
 			}
 			
 			else{
 				System.out.println("Modal not displayed");
 			}
+			
 		}
+	
+		
+	
 
 	
 	public static void main(String [] args) throws InterruptedException{
@@ -239,10 +231,7 @@ public class AppTest{
 		searchForBundledProduct();
 		
 		addToCartAndProceedToCartPage();
-		
-		cartModalValidation();
-		
-		
+
 		System.out.println("All actions done!");
 		
 	}
