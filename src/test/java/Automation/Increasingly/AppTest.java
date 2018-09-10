@@ -187,7 +187,42 @@ public class AppTest{
 	        
 	        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", addToCartButton);
 	        
-	        cartModalValidation();
+			WebElement ModalDiv;
+			
+			ModalDiv = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='inc_minibasket_modal-content']")));
+			
+			if(ModalDiv.isDisplayed()){
+				
+				Thread.sleep(3000);
+				
+				WebElement confirmationMsg;
+				
+				WebElement modalRecHeader;
+				
+				confirmationMsg = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//p[@class='prodAddedTag']")));
+				
+				modalRecHeader = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//p[@class='modalPHead']")));
+				
+				String confirmationText = confirmationMsg.getText();
+				
+				String recHeaderText = modalRecHeader.getText();
+				
+				String ActualConfirmText = "was added to your shopping cart";
+				
+				String ActualHeaderText = "Other users also bought";
+				
+				if(confirmationText.contains(ActualConfirmText) && recHeaderText.contains(ActualHeaderText)){
+					
+					System.out.println("Product addition confirmation message found!");
+					System.out.println("Modal recommendation text found!");
+	
+				}
+				
+				else{
+					
+					System.out.println("Product addition confirmation message not found!");
+					System.out.println("Modal recommendation text not found!");					
+				}
 	        
 	        WebElement addToCart_button;
 	        
@@ -197,7 +232,7 @@ public class AppTest{
 	        
 	        driver.manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
 	        
-	        
+			}
 		}
 		
 		public static void cartModalValidation() throws InterruptedException{
